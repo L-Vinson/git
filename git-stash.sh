@@ -313,13 +313,14 @@ push_stash () {
 			git clean --force --quiet -d $CLEAN_X_OPTION -- "$@"
 		fi
 
-		if test $# != 0
+		if test $# = 0
+		then
+			git reset --hard -q
+		elif git ls-files --error-unmatch -- "$@" >/dev/null 2>&1
 		then
 			git add -u -- "$@"
 			git diff-index -p --cached --binary HEAD -- "$@" |
 			git apply --index -R
-		else
-			git reset --hard -q
 		fi
 
 		if test "$keep_index" = "t" && test -n "$i_tree"
