@@ -1019,4 +1019,10 @@ test_expect_success 'stash -u -- <untracked> leaves rest of working tree in plac
 	test_path_is_file tracked
 '
 
+test_expect_success 'stash -u -- <non-existant> shows no changes when there are none' '
+	git stash push -u -- non-existant >actual &&
+	echo "No local changes to save" >expect &&
+	test_i18ncmp expect actual
+'
+
 test_done
